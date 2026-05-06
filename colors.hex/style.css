@@ -1,0 +1,462 @@
+/* Variáveis de cores e tamanhos */
+:root {
+    --bg-body: #f4f6f8;
+    --bg-card: #ffffff;
+    --text-main: #2d3748;
+    --text-muted: #718096;
+    --primary: #4299e1;
+    --primary-hover: #3182ce;
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --radius: 12px;
+    --transition: all 0.2s ease-in-out;
+}
+
+body.dark-mode {
+    --bg-body: #1a202c;
+    --bg-card: #2d3748;
+    --text-main: #f7fafc;
+    --text-muted: #a0aec0;
+    --border-color: #4a5568;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    min-height: 100vh;
+}
+
+/* Barra superior e Botão de Tema */
+.top-bar {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.btn-theme {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 2px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-theme:hover {
+    background-color: var(--border-color);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    color: var(--text-main);
+}
+
+p.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Estrutura principal do site */
+.container {
+    width: 100%;
+    max-width: 900px;
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem;
+}
+
+@media (min-width: 768px) {
+    .container {
+        grid-template-columns: 1fr 1fr;
+    }
+    .palettes-section, .favorites-section, .color-chart-section {
+        grid-column: span 2;
+    }
+}
+
+/* Área do seletor de cores e barras de ajuste */
+.visual-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.color-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: var(--radius);
+    background-color: #3498db; /* Cor inicial */
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.1s linear;
+}
+
+/* Esconde o seletor padrão do navegador, mas mantém ele clicável em cima do preview */
+.color-preview input[type="color"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.slider-group label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-muted);
+}
+
+.slider-group input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-action {
+    flex: 1;
+    background-color: var(--primary);
+    color: #ffffff;
+    border: none;
+    padding: 0.85rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.btn-action:hover {
+    background-color: var(--primary-hover);
+}
+
+.btn-favorite.active {
+    background-color: #ecc94b;
+    color: #744210;
+}
+.btn-favorite.active:hover {
+    background-color: #d69e2e;
+}
+body.dark-mode .btn-favorite.active {
+    background-color: #d69e2e;
+    color: #fffff0;
+}
+
+/* Seção de Favoritos */
+.favorites-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+}
+
+.favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.favorites-header h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0;
+}
+
+.favorites-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-export {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-export:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-clear {
+    background: transparent;
+    border: 1px solid #e53e3e;
+    color: #e53e3e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-clear:hover {
+    background: #e53e3e;
+    color: #fff;
+}
+
+.empty-msg {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Grupo de Simulação de Daltonismo */
+.simulation-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.simulation-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+.simulation-group select {
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition);
+}
+.simulation-group select:focus {
+    border-color: var(--primary);
+}
+
+/* Aplicação dos filtros SVG */
+body.daltonism-protanopia .color-preview, body.daltonism-protanopia .swatch-container, body.daltonism-protanopia .color-chart { filter: url('#protanopia'); }
+body.daltonism-deuteranopia .color-preview, body.daltonism-deuteranopia .swatch-container, body.daltonism-deuteranopia .color-chart { filter: url('#deuteranopia'); }
+body.daltonism-tritanopia .color-preview, body.daltonism-tritanopia .swatch-container, body.daltonism-tritanopia .color-chart { filter: url('#tritanopia'); }
+body.daltonism-achromatopsia .color-preview, body.daltonism-achromatopsia .swatch-container, body.daltonism-achromatopsia .color-chart { filter: url('#achromatopsia'); }
+
+/* Campos de texto das cores (HEX, RGB, HSL) */
+.inputs-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.input-row {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.input-row input[type="text"] {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: monospace;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--bg-body);
+    outline: none;
+    transition: var(--transition);
+    color: var(--text-main);
+}
+
+.input-row input[type="text"]:focus {
+    border-color: var(--primary);
+}
+
+.input-row input[type="text"].error {
+    border-color: #e53e3e;
+    background-color: #fff5f5;
+}
+
+body.dark-mode .input-row input[type="text"].error {
+    border-color: #fc8181;
+    background-color: #5c1818;
+}
+
+.btn-copy {
+    background: var(--bg-body);
+    border: 2px solid var(--border-color);
+    color: var(--text-main);
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-copy:hover {
+    background: var(--border-color);
+}
+
+/* Seção das paletas de cores harmônicas */
+.palettes-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+}
+
+.palettes-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.palettes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.palette-group h3 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.swatch-container {
+    display: flex;
+    height: 60px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.swatch {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: transparent; /* Esconde o texto até passar o mouse */
+    font-weight: bold;
+}
+
+.swatch:hover {
+    color: #ffffff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+    opacity: 0.9;
+}
+
+/* Tabela de Cores HTML */
+.color-chart-section {
+    border-top: 1px solid var(--border-color);
+    padding-top: 1.5rem;
+}
+
+.color-chart-section h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.color-chart {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 0.5rem;
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.chart-swatch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: transparent;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.chart-swatch:hover {
+    transform: scale(1.05);
+    color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+/* Aviso pop-up de "Copiado!" (Toast) */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #2d3748;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1000;
+    box-shadow: var(--shadow-md);
+}
+
+.toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador & Conversor de Cores Profissional</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="top-bar">
+        <button id="themeToggle" class="btn-theme">🌙 Dark Mode</button>
+    </div>
+
+    <h1>Gerador de Cores</h1>
+    <p class="subtitle">Selecione, converta e crie paletas harmônicas instantaneamente</p>
+
+    <main class="container">
+        <!-- Lado Esquerdo: Seletor visual e barras de ajuste -->
+        <section class="visual-picker">
+            <div class="color-preview" id="colorPreview" title="Clique para abrir o seletor nativo">
+                <input type="color" id="nativePicker" value="#3498db">
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn-action" id="btnRandom">🎲 Aleatória</button>
+                <button class="btn-action btn-favorite" id="btnFavorite">⭐ Favoritar</button>
+            </div>
+            
+            <div class="simulation-group">
+                <label for="daltonismSelect">Simular Daltonismo:</label>
+                <select id="daltonismSelect">
+                    <option value="none">Nenhum (Visão Normal)</option>
+                    <option value="protanopia">Protanopia (Dificuldade com vermelho)</option>
+                    <option value="deuteranopia">Deuteranopia (Dificuldade com verde)</option>
+                    <option value="tritanopia">Tritanopia (Dificuldade com azul)</option>
+                    <option value="achromatopsia">Acromatopsia (Visão monocromática)</option>
+                </select>
+            </div>
+            
+            <div class="sliders">
+                <div class="slider-group">
+                    <label for="hueSlider"><span>Matiz (H)</span> <span id="hueVal">204°</span></label>
+                    <input type="range" id="hueSlider" min="0" max="360" value="204">
+                </div>
+                <div class="slider-group">
+                    <label for="satSlider"><span>Saturação (S)</span> <span id="satVal">70%</span></label>
+                    <input type="range" id="satSlider" min="0" max="100" value="70">
+                </div>
+                <div class="slider-group">
+                    <label for="litSlider"><span>Luminosidade (L)</span> <span id="litVal">53%</span></label>
+                    <input type="range" id="litSlider" min="0" max="100" value="53">
+                </div>
+            </div>
+        </section>
+
+        <!-- Lado Direito: Campos de texto para os códigos das cores -->
+        <section class="inputs-panel">
+            <div class="input-group">
+                <label for="hexInput">HEX</label>
+                <div class="input-row">
+                    <input type="text" id="hexInput" value="#3498DB" placeholder="#000000">
+                    <button class="btn-copy" onclick="copyToClipboard('hexInput')" title="Copiar HEX">Copiar</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="rgbInput">RGB</label>
+                <div class="input-row">
+                    <input type="text" id="rgbInput" value="52, 152, 219" placeholder="255, 255, 255">
+                    <button class="btn-copy" onclick="copyToClipboard('rgbInput')" title="Copiar RGB">Copiar</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="hslInput">HSL</label>
+                <div class="input-row">
+                    <input type="text" id="hslInput" value="204, 70%, 53%" placeholder="360, 100%, 100%">
+                    <button class="btn-copy" onclick="copyToClipboard('hslInput')" title="Copiar HSL">Copiar</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="oklchInput">OKLCH</label>
+                <div class="input-row">
+                    <input type="text" id="oklchInput" value="0.62, 0.14, 240" placeholder="L, C, H">
+                    <button class="btn-copy" onclick="copyToClipboard('oklchInput')" title="Copiar OKLCH">Copiar</button>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="nameInput">Nome HTML</label>
+                <div class="input-row">
+                    <input type="text" id="nameInput" value="Sem nome exato" placeholder="vermelho, azul, coral...">
+                    <button class="btn-copy" onclick="copyToClipboard('nameInput')" title="Copiar Nome">Copiar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Parte de baixo: Paletas de cores harmônicas -->
+        <section class="palettes-section">
+            <h2>Paletas Harmônicas</h2>
+            <div class="palettes-grid">
+                <div class="palette-group">
+                    <h3>Complementar</h3>
+                    <div class="swatch-container" id="paletteComp"></div>
+                </div>
+                <div class="palette-group">
+                    <h3>Análoga</h3>
+                    <div class="swatch-container" id="paletteAnalog"></div>
+                </div>
+                <div class="palette-group">
+                    <h3>Triádica</h3>
+                    <div class="swatch-container" id="paletteTriad"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Nova Seção: Cores Favoritas -->
+        <section class="favorites-section">
+            <div class="favorites-header">
+                <h2>Cores Favoritas</h2>
+                <div class="favorites-actions">
+                    <button id="btnExportFavorites" class="btn-export" style="display: none;">🖼️ Exportar Imagem</button>
+                    <button id="btnClearFavorites" class="btn-clear" style="display: none;">Limpar Tudo</button>
+                </div>
+            </div>
+            <div class="color-chart" id="favoritesGrid"></div>
+            <p id="emptyFavoritesMsg" class="empty-msg">Você ainda não tem cores favoritas.</p>
+        </section>
+        
+        <!-- Nova Seção: Tabela de Cores HTML Padrão -->
+        <section class="color-chart-section">
+            <h2>Tabela de Cores HTML</h2>
+            <div class="color-chart" id="colorChart"></div>
+        </section>
+    </main>
+
+    <div class="toast" id="toastMsg">Copiado para a área de transferência!</div>
+
+    <script src="script.js"></script>
+
+    <!-- Filtros SVG para Simulação de Daltonismo -->
+    <svg style="width:0; height:0; position:absolute;">
+        <defs>
+            <filter id="protanopia">
+                <feColorMatrix type="matrix" values="0.567, 0.433, 0, 0, 0  0.558, 0.442, 0, 0, 0  0, 0.242, 0.758, 0, 0  0, 0, 0, 1, 0"/>
+            </filter>
+            <filter id="deuteranopia">
+                <feColorMatrix type="matrix" values="0.625, 0.375, 0, 0, 0  0.7, 0.3, 0, 0, 0  0, 0.3, 0.7, 0, 0  0, 0, 0, 1, 0"/>
+            </filter>
+            <filter id="tritanopia">
+                <feColorMatrix type="matrix" values="0.95, 0.05, 0, 0, 0  0, 0.433, 0.567, 0, 0  0, 0.475, 0.525, 0, 0  0, 0, 0, 1, 0"/>
+            </filter>
+            <filter id="achromatopsia">
+                <feColorMatrix type="matrix" values="0.299, 0.587, 0.114, 0, 0  0.299, 0.587, 0.114, 0, 0  0.299, 0.587, 0.114, 0, 0  0, 0, 0, 1, 0"/>
+            </filter>
+        </defs>
+    </svg>
+</body>
+</html>
